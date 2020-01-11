@@ -1,0 +1,20 @@
+namespace AdComm.Saves;
+
+// Reference: https://google.github.io/flatbuffers/flatbuffers_guide_writing_schema.html
+// https://github.com/edvinerikson/Adventure-communist/blob/master/dump.cs
+
+table SaveGameModel {
+  dataVersion: ushort;
+  saveVersion: uint;
+  saveTime: long;
+  resources: [Resource];
+  industries: [Industry];
+}
+
+table Resource {
+
+}
+
+table Industry {
+
+}
