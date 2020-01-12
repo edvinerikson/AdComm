@@ -3,18 +3,229 @@ namespace AdComm.Saves;
 // Reference: https://google.github.io/flatbuffers/flatbuffers_guide_writing_schema.html
 // https://github.com/edvinerikson/Adventure-communist/blob/master/dump.cs
 
+enum Gender : byte { Male = 0, Female = 1 }
+enum GeneratorState : byte {
+  Idle = 0,
+  Running = 1,
+  Complete = 2
+}
+
+enum UnlockState : byte {
+  None = 0,
+	Locked = 1,
+	Unlocked = 2,
+	New = 4,
+	Hidden = 8
+}
+
+enum AwardState : byte {
+	Locked = 0,
+	Unlocked = 1,
+	Claimed = 2,
+	Active = 4
+}
+
+enum DealType : byte {
+	Researcher = 0
+}
+
+
+table Resource {
+ id: string;
+ qty: double;
+
+}
+
+table Industry {
+  id: string;
+  unlocked: UnlockState;
+  scrollPos: float;
+}
+
+table Generator {
+  name: string;
+  timeRemaining: float;
+  objectiveLevelClaimed: int;
+  state: GeneratorState;
+  unlocked: UnlockState;
+  objectiveLevelReached: int;
+  generatorUnlockedEver: bool;
+}
+
+table Mission {
+  id: int;
+  state: AwardState;
+  progress: double;
+}
+table Experiment {
+  id: uint;
+  rewardCount: int;
+  timeRemaining: double;
+
+}
+
+table Researcher {
+  id: uint;
+  level: byte;
+  quantity: int;
+  isNewCard: bool;
+}
+
+table TradeLevel {
+  id: string;
+  value: int;
+}
+
+table Ad {
+  id: int;
+  currentViews: byte;
+  viewsToLimit: byte;
+  timeRemaining: double;
+}
+
+table Statistic {
+  id: string;
+  value: double;
+}
+
+table Flag {
+  id: string;
+  value: byte;
+}
+
+table StorePromo {
+  id: string;
+  expiry: long;
+  viewedTakeover: bool;
+  offerType: int;
+}
+
+table DailyDeals {
+  deals: [Deal];
+  expiry: long;
+}
+
+table Deal {
+  type: DealType;
+  id: string;
+  purchased: bool;
+  quantity: int;
+  cappedQuantity: int;
+  overCountScienceGain: int;
+  currency: string;
+}
+
+table GachaScript {
+  gachaId: string;
+  lastScriptId: int;
+}
+
+table AirDropServiceProgress {
+  nextAdResetData: long;
+  nextClaimCountResetData: long;
+  nextAirDropDate: long;
+  claimCount: int;
+  airDropProgress: [AirDropModelProgress];
+}
+
+table AirDropModelProgress {
+  airDropWatchCountId: int;
+  airDropWatchCount: byte; // TODO: Should be sbyte
+}
+
+table OfferTypeToPromoExpiry {
+  offerType: int;
+  expiry: long;
+}
+
+table PendingLeaderboardScore {
+  score: int;
+  isCheater: bool;
+}
+
+table OfferPoolSaveData {
+  segmentId: string;
+  offerType: int;
+  index: int;
+}
+
+table OfferResetData {
+  offerType: int;
+  expiry: long;
+  rank: int;
+}
+
+table OfferData {
+  id: string;
+  expiry: long;
+  viewedTakeover: bool;
+  offerType: int;
+  displayName: string;
+}
+
 table SaveGameModel {
   dataVersion: ushort;
   saveVersion: uint;
   saveTime: long;
   resources: [Resource];
   industries: [Industry];
+  generators: [Generator];
+  missions: [Mission];
+  experiments: [Experiment];
+  researchers: [Researcher];
+  tradeLevels: [TradeLevel];
+  gachaScripts: [GachaScript];
+  storePromos: [StorePromo];
+  ads: [Ad];
+  flags: [Flag];
+  statistics: [Statistic];
+  tutorials: [string];
+  tutorialCheckpoint: string;
+  dailyDeals: DailyDeals;
+  rank: int;
+  viewedNewsTime: long;
+  buyModifierIndex: int;
+  specialOfferBadgeResetTime: long;
+  mostRecentWeekendOfferExpiry: long;
+  gender: Gender;
+  airDropServiceProgress: AirDropServiceProgress;
+  lteId: string;
+  offerTypeToPromoExpiry: [OfferTypeToPromoExpiry];
+  previousLoadTime: long;
+  pendingLeaderboardScore: PendingLeaderboardScore;
+  availableFreeGachaCapsules: int;
+  nextFreeGachaTimeRemaining: double;
+  lastEarnedSupremeId: string;
+  previousBracketPlacementIndex: int;
+  offerPoolIndices: [OfferPoolSaveData];
+  offerResetData: [OfferResetData];
+  storeOffers: [OfferData];
 }
 
-table Resource {
-
+table LteProgress {
+  id: string;
+  rank: int;
+  claimed: bool;
 }
 
-table Industry {
+table PurchaseHistoryData {
+  isLte: bool;
+  value: double;
+  purchaseDate: long;
+  currency: string;
+}
 
+table SharedSaveGameModel {
+  dataVersion: ushort;
+  saveVersion: uint;
+  saveTime: long;
+  gold: uint;
+  lteProgress: [LteProgress];
+  lteLearned: bool;
+  sharedStatistics: [Statistic];
+  sharedResources: [Resource];
+  timeHackInventoryLearned: bool;
+  abTestGroups: [string];
+  sharedGender: Gender;
+  purchaseHistory: [PurchaseHistoryData];
 }
