@@ -12,21 +12,21 @@ enum GeneratorState : byte {
 
 enum UnlockState : byte {
   None = 0,
-	Locked = 1,
-	Unlocked = 2,
-	New = 4,
-	Hidden = 8
+  Locked = 1,
+  Unlocked = 2,
+  New = 4,
+  Hidden = 8
 }
 
 enum AwardState : byte {
-	Locked = 0,
-	Unlocked = 1,
-	Claimed = 2,
-	Active = 4
+  Locked = 0,
+  Unlocked = 1,
+  Claimed = 2,
+  Active = 4
 }
 
 enum DealType : byte {
-	Researcher = 0
+  Researcher = 0
 }
 
 
